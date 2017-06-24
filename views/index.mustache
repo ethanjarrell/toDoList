@@ -3,30 +3,40 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah|Open+Sans" rel="stylesheet">
     <title>To Do List</title>
   </head>
   <body>
     <div class="outerContainer">
       <form active="/" method="post">
-                  <header class="toDoListHeader">TO DO LIST</header>
-                  <input type="text" name="todoinput" placeholder="To do?">
+                  <header class="toDoListHeader">
+                    <span class="DarthList">Darth Vader's To Do List</span>
+
+
+
+                  </header>
+                  <input id="input" type="text" name="toDoInput" placeholder="To do?">
                   </form>
 
 
       {{#toDoList}}
-      <ul class="toDoList">
-        <li class="toDoItem">{{listItem}}
-        </li>
-        <li class="status">{{#status}}<button class="click">complete</button>{{/status}}
+      <div name="toDoList" class="toDoList">
 
-        </li>
+        <div class="toDoItem">{{listItem}}</div>
 
-        <li>
-       {{#additem}}
-        {{text}}
-       {{/additem}}
-        </li>
-      </ul>
+        {{#.}}
+        <div class="toDoItem">{{.}}<div class="squaredOne">
+	<input type="checkbox" value="None" id="squaredOne" name="check" />
+	<label for="squaredOne"></label>
+</div></div>
+        {{/.}}
+
+        <!-- <div class="status">{{#status}}<input type="checkbox" class="checkNice">{{/status}}</div> -->
+
+
+
+
+      </div>
       {{/toDoList}}
 
 
