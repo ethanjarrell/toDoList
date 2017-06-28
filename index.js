@@ -3,18 +3,18 @@ const bodyParser = require('body-Parser');
 const path = require('path');
 const expressValidator = require('express-validator');
 const mustacheExpress = require('mustache-express');
-// const jsonfile = require('jsonfile');
+const models = require('./models');
 const data = require("./data.js");
 const app = express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false}));
 
 app.engine('mustache', mustacheExpress());
 app.set('views', './views')
 app.use(express.static('public'));
 app.set('view engine', 'mustache');
 app.use(expressValidator());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false}));
 
 // read from the json file.
 // var file = 'data.json';
@@ -23,40 +23,43 @@ app.use(expressValidator());
 //   todo = obj;
 // })
 
+// const task = models.Todo.build({
+//   item:'go to the store',
+//   status: 'f'
+// })
+//
+// task.save().then(function(newTask){
+//   console.log(newTask)
+// })
 
 
-app.get('/', function (req, res){
-
-
-    // let inputResluts = input.value;
-    // let inputResults = {  },
-    // todo.toDoList.push(inputResults);
-  res.render('index', { toDoList: data.toDoList });
+app.get('/', function (req, res, next){
+  models.Todo.findAll().then(function(item){
+    res.render('index', {listitem:item})
+  })
 });
-
-
+// //
+// //
 app.post("/", function (req, res) {
 
 
-  // req.checkBody('item', 'Vader Input').notEmpty();
-  // let errors = req.validationErrors();
-  // if (errors) {
-  //   res.render('index', {errors: errors});
-  // }else{
-  //   let toDoList = {
-  //     'item' : req.body.toDoInput,
-  //     'priority' : req.body,
-  //     'checked' : ""
-  //   }
-  // }
+  // newItem = req.body.Input,
+  // newTask = newItem,
+  // newTask = models.Todo.build({
+  // item:req.body.Input,
+  // status: 'f'
 
-  data.toDoList.push(req.body.toDoInput);
 
-  // write to the json file.
-  // jsonfile.writeFile(file, todo);
+  const task = models.Todo.build({
+    item: req.body.Input,
+    status: 'f'
+  })
 
+  task.save().then(function(newTask){
+    console.log(newTask)
+  })
   res.redirect('/');
-  
+
 });
 
 app.listen(3000, function () {
